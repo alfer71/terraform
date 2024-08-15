@@ -31,7 +31,7 @@ resource "aws_route_table_association" "main" {
   route_table_id = aws_route_table.main.id
 }
 
-resource "aws_security_group" "jenkins" {
+resource "aws_security_group" "nagios" {
   vpc_id = aws_vpc.main.id
 
   ingress {
@@ -42,8 +42,8 @@ resource "aws_security_group" "jenkins" {
   }
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -62,14 +62,14 @@ resource "aws_instance" "jenkins_server" {
   key_name               = "aws-access-key"
   associate_public_ip_address = true
   subnet_id              = aws_subnet.main.id
-  vpc_security_group_ids = [aws_security_group.jenkins.id]
+  vpc_security_group_ids = [aws_security_group.nagios.id]
 
   root_block_device {
     volume_size = 30
   }
 
   tags = {
-    Name = "JenkinsServer"
+    Name = "NagiosServer"
   }
 
   user_data = <<-EOF
@@ -78,11 +78,11 @@ resource "aws_instance" "jenkins_server" {
     sudo apt upgrade -y
   EOF
 
-  depends_on = [aws_security_group.jenkins]
+  depends_on = [aws_security_group.nagios]
 }
 
-resource "aws_s3_bucket" "jenkins_artifacts" {
-  bucket = "jenkins-artifacts-${random_string.bucket_suffix.result}"
+resource "aws_s3_bucket" "nagios_artifacts" {
+  bucket = "nagios-artifacts-${random_string.bucket_suffix.result}"
 }
 
 resource "random_string" "bucket_suffix" {
