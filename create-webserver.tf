@@ -56,7 +56,7 @@ resource "aws_security_group" "nagios" {
   }
 }
 
-resource "aws_instance" "jenkins_server" {
+resource "aws_instance" "nagios_server" {
   ami                    = "ami-04b70fa74e45c3917"
   instance_type          = "t2.medium"
   key_name               = "aws-access-key"
