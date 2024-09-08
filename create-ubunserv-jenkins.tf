@@ -81,12 +81,3 @@ resource "aws_instance" "jenkins_server" {
   depends_on = [aws_security_group.jenkins]
 }
 
-resource "aws_s3_bucket" "jenkins_artifacts" {
-  bucket = "jenkins-artifacts-${random_string.bucket_suffix.result}"
-}
-
-resource "random_string" "bucket_suffix" {
-  length  = 8
-  special = false
-  upper   = false
-}
