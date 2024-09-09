@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1" # Specify your region
+  region = "us-east-1"
 }
 
 resource "aws_vpc" "main" {
@@ -31,7 +31,7 @@ resource "aws_route_table_association" "main" {
   route_table_id = aws_route_table.main.id
 }
 
-resource "aws_security_group" "jenkins" {
+resource "aws_security_group" "EC2_CI-CD" {
   vpc_id = aws_vpc.main.id
 
   ingress {
@@ -56,20 +56,20 @@ resource "aws_security_group" "jenkins" {
   }
 }
 
-resource "aws_instance" "jenkins_server" {
-  ami                    = "ami-04b70fa74e45c3917"
-  instance_type          = "t2.medium"
+resource "aws_instance" "EC2_CI-CD_server" {
+  ami                    = "ami-0a5c3558529277641"
+  instance_type          = "t2.micro"
   key_name               = "aws-access-key"
   associate_public_ip_address = true
   subnet_id              = aws_subnet.main.id
-  vpc_security_group_ids = [aws_security_group.jenkins.id]
+  vpc_security_group_ids = [aws_security_group.EC2_CI-CD.id]
 
   root_block_device {
     volume_size = 30
   }
 
   tags = {
-    Name = "JenkinsServer"
+    Name = "EC2_CI-CDServer"
   }
 
   user_data = <<-EOF
@@ -78,6 +78,6 @@ resource "aws_instance" "jenkins_server" {
     sudo apt upgrade -y
   EOF
 
-  depends_on = [aws_security_group.jenkins]
+  depends_on = [aws_security_group.EC2_CI-CD]
 }
 
