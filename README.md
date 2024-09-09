@@ -1,3 +1,3 @@
 # Terraform scripts
-1. Terraform script to create a private AWS ECR for Docker repository
+1. Terraform script to create a Amazon Linux 2 AWS EC2 Instance for the CI/CD Pipeline
    - ecr_repository.tf
