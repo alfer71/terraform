@@ -59,7 +59,7 @@ resource "aws_security_group" "nagios" {
 resource "aws_instance" "nagios_server" {
   ami                    = "ami-04b70fa74e45c3917"
   instance_type          = "t2.medium"
-  key_name               = "aws-access-key"
+  key_name               = "cloudguru-aws-key"
   associate_public_ip_address = true
   subnet_id              = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.nagios.id]
